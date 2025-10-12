@@ -1,0 +1,45 @@
+BasedOnStyle: LLVM
+
+# Anchura / identación
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+ContinuationIndentWidth: 4
+ColumnLimit: 80
+
+# Llaves y bloques
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortLambdasOnASingleLine: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Switch/case y preprocesador
+IndentCaseLabels: true
+IndentGotoLabels: true
+IndentPPDirectives: None
+
+# Espaciado y alineación
+DerivePointerAlignment: false
+PointerAlignment: Middle
+SpaceBeforeParens: Never
+SpaceAfterCStyleCast: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignTrailingComments: true
+AlignConsecutiveMacros: AcrossEmptyLines
+AccessModifierOffset: -4
+FixNamespaceComments: false
+
+# Includes
+SortIncludes: false
+IncludeBlocks: Preserve
+
+# Tratamiento de macros “tipo sentencia”
+StatementMacros:
+  - ASSERT
+  - EXPECT
+  - CHECK
+  - LOG
