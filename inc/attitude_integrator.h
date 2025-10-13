@@ -12,6 +12,9 @@
  */
 #define QUAT_VALUE_ERROR (-2)
 
+/** @brief Maximo paso de integracion permitido en milisegundos: 1 dia */
+#define MAX_TIME_STEP (24 * 60 * 60 * 1000)
+
 /**
  * @brief Estructura de un cuaternión unitario.
  *
@@ -49,10 +52,10 @@ void attitude_init(quaternion_t * q);
  * @param gyr_sensors Direccion a driver de giróscopos.
  * @param time_step_ms Paso de integracion, en milisegundos.
  *
- * @return void.
+ * @return Retorna 0 si no hay error, sino -1.
  */
-void attitude_step_kinematic(quaternion_t * attitude, void * gyr_sensors,
-                             uint16_t time_step_ms);
+int attitude_step_kinematic(quaternion_t * attitude, void * gyr_sensors,
+                            uint32_t time_step_ms);
 
 /** @brief Leer componente i del cuaternion.
  *

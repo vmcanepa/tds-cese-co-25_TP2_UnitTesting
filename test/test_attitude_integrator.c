@@ -54,10 +54,10 @@ void test_0b_obtener_componente_desde_0_hasta_3_del_cuaternion(void)
 void test_1_cuando_se_leen_gyros_con_valores_nulos_se_mantiene_constante_la_orientacion(
     void)
 {
-    double       x_velang = 0.0, y_velang = 0.0, z_velang = 0.0;
-    double       q[4], qref[4];       /* cuaterniones */
-    unsigned int time_step_ms = 1000; /* paso de 1 segundo */
-    void *       gyr_sensors;         /* direccion a driver de gyros. */
+    double   x_velang = 0.0, y_velang = 0.0, z_velang = 0.0;
+    double   q[4], qref[4];       /* cuaterniones */
+    uint32_t time_step_ms = 1000; /* paso de 1 segundo */
+    void *   gyr_sensors;         /* direccion a driver de gyros. */
 
     qref[0] = 0.0; /* referencia para comparacion en test */
     qref[1] = 0.0; /* referencia para comparacion en test */
@@ -87,9 +87,34 @@ void test_1_cuando_se_leen_gyros_con_valores_nulos_se_mantiene_constante_la_orie
     TEST_ASSERT_DOUBLE_WITHIN(1.0E-3, qref[3], q[3]);
 }
 
+/**
+ *  @brief El paso de tiempo dt para el integrador numérico debe ser mayor
+ * estricto que 0.
+ */
+void test_2_argumento_dt_debe_ser_positivo(void)
+{
+    int      state;
+    void *   gyr_sensors; /* direccion a driver de gyros. */
+    uint32_t dt_ms;       /* paso en milisegundos */
+
+    /* cmock: cuando se llame a leer_gyros() devolver OK */
+    leer_gyros_ExpectAnyArgsAndReturn(0);
+    dt_ms = 1; /* paso de 1 milisegundo */
+    state = attitude_step_kinematic(&attitude, &gyr_sensors, dt_ms);
+    TEST_ASSERT_EQUAL_INT(0, state);
+
+    /* cmock: cuando se llame a leer_gyros() devolver OK */
+    dt_ms = 0; /* paso NULO de 0 milisegundo (debe dar error) */
+    state = attitude_step_kinematic(&attitude, &gyr_sensors, dt_ms);
+    TEST_ASSERT_EQUAL_INT(-1, state);
+
+    /* cmock: cuando se llame a leer_gyros() devolver OK */
+    dt_ms = -1; /* paso NEGATIVO de -1 milisegundo (debe dar error) */
+    state = attitude_step_kinematic(&attitude, &gyr_sensors, dt_ms);
+    TEST_ASSERT_EQUAL_INT(-1, state);
+}
+
 /* Test cases restantes:
- * 2) El paso de tiempo dt para el integrador numérico debe ser mayor estricto
- *    que 0.
  * 3) Para un paso chico de tiempo (dt << 1 s), una orientación inicial conocida
  *    (q_0 := [0 0 0 1]) y una velocidad angular medida conocida con los datos
  *    de giróscopos (w1,w2,w3), la orientación integrada se aproxima a:
