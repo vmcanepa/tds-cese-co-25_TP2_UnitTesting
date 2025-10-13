@@ -1,4 +1,10 @@
 {
     "editor.defaultFormatter": "xaver.clang-format",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "attitude_integrator.h": "c",
+        "unity.h": "c",
+        "unity_internals.h": "c",
+        "unity_config.h": "c"
+    }
 }
