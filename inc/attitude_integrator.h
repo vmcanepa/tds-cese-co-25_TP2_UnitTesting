@@ -42,6 +42,18 @@ typedef struct
  */
 void attitude_init(quaternion_t * q);
 
+/** @brief Actualizacion de la orientacion (actitud) usando datos de giróscopos
+ * y paso de integracion.
+ *
+ * @param attitude Cuaternion de actitud (orientacion actual).
+ * @param gyr_sensors Direccion a driver de giróscopos.
+ * @param time_step_ms Paso de integracion, en milisegundos.
+ *
+ * @return void.
+ */
+void attitude_step_kinematic(quaternion_t * attitude, void * gyr_sensors,
+                             uint16_t time_step_ms);
+
 /** @brief Leer componente i del cuaternion.
  *
  * @param q cuaternion.
