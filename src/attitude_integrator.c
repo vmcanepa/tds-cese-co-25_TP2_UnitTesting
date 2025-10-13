@@ -26,7 +26,7 @@ int attitude_step_kinematic(quaternion_t * attitude, void * gyr_sensors,
 
     t = (double) (time_step_ms / 1000);
 
-    attitude->q1 += 0.5 * w1 * t;
+    attitude->q1 += 0.5 * w1 * t; /**/
     attitude->q2 += 0.5 * w2 * t;
     attitude->q3 += 0.5 * w3 * t;
     attitude->q0 = 1.0;

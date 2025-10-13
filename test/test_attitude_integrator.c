@@ -114,11 +114,48 @@ void test_2_argumento_dt_debe_ser_positivo(void)
     TEST_ASSERT_EQUAL_INT(-1, state);
 }
 
+/**
+ *  @brief Para un paso chico de tiempo (dt << 1 s), una orientación inicial
+ * conocida (q_0 := [0 0 0 1]) y una velocidad angular medida conocida con los
+ * datos de giróscopos (w1,w2,w3), la orientación integrada se aproxima a:
+ * q(dt+t0) == [0.5*w1*dt, 0.5*w2*dt, 0.5*w3*dt, 1].
+ */
+void test_3_paso_chico_de_integracion(void)
+{
+    uint32_t time_step_ms = 1000; /* paso de 1 segundo */
+    double   t, x_velang, y_velang, z_velang;
+    double   q[4], qref[4]; /* cuaterniones */
+    void *   gyr_sensors;   /* direccion a driver de gyros. */
+
+    /* cmock: cuando se llame a leer_gyros() devolver OK */
+    leer_gyros_ExpectAnyArgsAndReturn(0);
+    /* cmock: se debe cargar el valor preestablecido en la direccion de cada
+     * puntero: */
+    x_velang = 10.0 * 3.1415 / 180.0; /* rad/s */
+    y_velang = 0.0 * 3.1415 / 180.0;  /* rad/s */
+    z_velang = 0.0 * 3.1415 / 180.0;  /* rad/s */
+    leer_gyros_ReturnThruPtr_w1(&x_velang);
+    leer_gyros_ReturnThruPtr_w2(&y_velang);
+    leer_gyros_ReturnThruPtr_w3(&z_velang);
+
+    /* paso de integracion: */
+    attitude_step_kinematic(&attitude, &gyr_sensors, time_step_ms);
+
+    /* guardar componentes de cuaternion propagado: */
+    q[0] = attitude_get_component(&attitude, 1);
+    q[1] = attitude_get_component(&attitude, 2);
+    q[2] = attitude_get_component(&attitude, 3);
+    q[3] = attitude_get_component(&attitude, 0);
+
+    /* comparar: */
+    t = time_step_ms / 1000;
+    TEST_ASSERT_DOUBLE_WITHIN(1.0E-3, 0.5 * x_velang * t, q[0]);
+    TEST_ASSERT_DOUBLE_WITHIN(1.0E-3, 0.5 * y_velang * t, q[1]);
+    TEST_ASSERT_DOUBLE_WITHIN(1.0E-3, 0.5 * z_velang * t, q[2]);
+    TEST_ASSERT_DOUBLE_WITHIN(1.0E-3, 1.0, q[3]);
+}
+
 /* Test cases restantes:
- * 3) Para un paso chico de tiempo (dt << 1 s), una orientación inicial conocida
- *    (q_0 := [0 0 0 1]) y una velocidad angular medida conocida con los datos
- *    de giróscopos (w1,w2,w3), la orientación integrada se aproxima a:
- *    q(dt+t0) == [0.5*w1*dt, 0.5*w2*dt, 0.5*w3*dt, 1].
  * 4) Usando dt := 1 seg y sensando la terna de gyros (w1,w2,w3):=(9,0,0) deg/s,
  *    luego de 10 pasos (10 segundos) la orientación iniciada q(t0):=[0 0 0 1]
  *    resulta q(10 s):=[sqrt(2)/2 0 0 sqrt(2)/2] (rotación de 90 deg en eje X).
