@@ -4,6 +4,14 @@
 #include "stdint.h"
 #include "math.h"
 
+/** @brief Componente de cuaternion con valor erroneo.
+ *
+ * @details Las componentes del cuaternion unitario no pueden superar en norma
+ * el valor 1. El número asignado para un valor erroneo debe superar en norma
+ * a 1.
+ */
+#define QUAT_VALUE_ERROR (-2)
+
 /**
  * @brief Estructura de un cuaternión unitario.
  *
@@ -59,7 +67,7 @@ static inline double attitude_get_component(const quaternion_t * q, uint8_t i)
             qi = q->q3;
             break;
         default:
-            qi = 0.0;
+            qi = QUAT_VALUE_ERROR;
             break;
     }
     return qi;

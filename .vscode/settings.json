@@ -5,6 +5,7 @@
         "attitude_integrator.h": "c",
         "unity.h": "c",
         "unity_internals.h": "c",
-        "unity_config.h": "c"
+        "unity_config.h": "c",
+        "math.h": "c"
     }
 }

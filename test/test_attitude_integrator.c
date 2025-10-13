@@ -31,6 +31,17 @@
 #include "unity.h"
 #include "attitude_integrator.h"
 
+static quaternion_t attitude;
+
+void setUp(void)
+{
+    attitude_init(&attitude);
+}
+
+void tearDown(void)
+{
+}
+
 void test_0_orientacion_inicial_por_defecto(void)
 {
     quaternion_t attitude;
@@ -41,6 +52,15 @@ void test_0_orientacion_inicial_por_defecto(void)
     TEST_ASSERT_EQUAL_DOUBLE(0.0, attitude_get_component(&attitude, 2));
     TEST_ASSERT_EQUAL_DOUBLE(0.0, attitude_get_component(&attitude, 3));
     TEST_ASSERT_EQUAL_DOUBLE(1.0, attitude_get_component(&attitude, 0));
+}
+
+void test_0b_obtener_componente_desde_0_hasta_3_del_cuaternion(void)
+{
+    int idx_fuera_de_rango = 4;
+
+    TEST_ASSERT_EQUAL_DOUBLE(
+        QUAT_VALUE_ERROR,
+        attitude_get_component(&attitude, idx_fuera_de_rango));
 }
 
 /* TEST_ASSERT_DOUBLE_WITHIN(1.0E-1, 0.0, attitude_get_component(&attitude, 0));
