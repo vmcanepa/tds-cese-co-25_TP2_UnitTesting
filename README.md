@@ -1,5 +1,22 @@
 # Trabajo Práctico Número 2: Test Unitario
 
+Este proyecto implementa un **integrador cinemático de cuaterniones** para estimar la orientación de un cuerpo rígido a partir de mediciones de **velocidad angular** provenientes de giróscopos.
+
+Un **cuaternión** `q = [q1, q2, q3, q0]` representa la orientación tridimensional sin singularidades como las
+de los ángulos de Euler. Cumple la restricción de norma unitaria: |q| = 1.
+
+La ecuación diferencial de la cinemática de actitud, en función de la velocidad angular `w = [wx, wy, wz]`, es:
+
+q_dot = 0.5 * E(q) * w
+
+donde `E(q)` es la matriz construida a partir del cuaternión actual.
+
+El integrador implementa el método de Euler para propagar la orientación:
+q_{k+1} = q_k + 0.5 * E(q_k) * w_k * dt
+y posteriormente **normaliza** el resultado para mantener `|q| = 1`.
+
+**Palabras clave:** cuaternión, actitud, integración numérica, giroscopio, navegación inercial.
+
 ## Uso del repositorio
 
 Este repositorio utiliza [pre-commit](https://pre-commit.com) para validaciones de formato. Para trabajar con el mismo usted debería tener instalado:
