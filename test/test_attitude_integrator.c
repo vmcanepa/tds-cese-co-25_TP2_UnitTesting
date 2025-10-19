@@ -213,7 +213,8 @@ void test_6_rotar_a_velocidad_y_tiempo_conocidos_resulta_angulo_conocido(void)
     TEST_ASSERT_DOUBLE_WITHIN(ERR_TOL, 0.5 * sqrt(2.0), q[2]);
     TEST_ASSERT_DOUBLE_WITHIN(ERR_TOL, 0.5 * sqrt(2.0), q[3]);
 
-    /* retorno */
+    /* sensado en sentido opuesto (retorno a orientacion cerca de condicion
+     * inicial) */
     while(t_ms < 20 * 1000)
     {
         /* cmock: cuando se llame a leer_gyros() devolver OK */
@@ -247,7 +248,25 @@ void test_6_rotar_a_velocidad_y_tiempo_conocidos_resulta_angulo_conocido(void)
 /**
  *  @brief Si los datos de algún sensor están fuera de rango, el integrador
  * retorna error.
+ */
 void test_7_alerta_sensores_fuera_de_rango(void)
 {
+    int      state;
+    uint32_t time_step_ms = 1000; /* paso de 1 segundo */
+    double   x_velang, y_velang, z_velang;
+    void *   gyr_sensors; /* direccion a driver de gyros. */
+
+    /* cmock: cuando se llame a leer_gyros() devolver OK */
+    leer_gyros_ExpectAnyArgsAndReturn(0);
+    /* cmock: se debe cargar el valor preestablecido en la direccion de cada
+     * puntero: */
+    x_velang = NAN; /* rad/s */
+    y_velang = 0.0; /* rad/s */
+    z_velang = 0.0; /* rad/s */
+    leer_gyros_ReturnThruPtr_w1(&x_velang);
+    leer_gyros_ReturnThruPtr_w2(&y_velang);
+    leer_gyros_ReturnThruPtr_w3(&z_velang);
+
+    state = attitude_step_kinematic(&attitude, &gyr_sensors, time_step_ms);
+    TEST_ASSERT_EQUAL(-1, state);
 }
- */

@@ -22,8 +22,17 @@ int attitude_step_kinematic(quaternion_t * attitude, void * gyr_sensors,
         /* no es posible usar el paso de integracion establecido. */
         return -1;
     }
-
-    leer_gyros(gyr_sensors, &w1, &w2, &w3);
+    if(0 != leer_gyros(gyr_sensors, &w1, &w2, &w3))
+    {
+        /* error al leer giroscopos. */
+        return -1;
+    }
+    if(!isfinite(w1) || !isfinite(w2) || !isfinite(w3) ||
+       fabs(w1) > W_MAXRANGE || fabs(w2) > W_MAXRANGE || fabs(w3) > W_MAXRANGE)
+    {
+        /* giroscopo fuera de rango. */
+        return -1;
+    }
 
     t    = ((double) time_step_ms) / 1000.0;
     q[1] = attitude->q1;

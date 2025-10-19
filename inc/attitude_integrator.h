@@ -15,6 +15,9 @@
 /** @brief Maximo paso de integracion permitido en milisegundos: 1 dia */
 #define MAX_TIME_STEP (24 * 60 * 60 * 1000)
 
+/** @brief Maximo valor tolerado de entrada de dato de giroscopo [rad/s]. */
+#define W_MAXRANGE (3.1415 * 0.5)
+
 /**
  * @brief Estructura de un cuaternión unitario.
  *
