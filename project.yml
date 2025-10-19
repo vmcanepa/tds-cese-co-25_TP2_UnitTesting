@@ -224,7 +224,8 @@
   :placement: :end
   :flag: "-l${1}"
   :path_flag: "-L ${1}"
-  :system: []    # for example, you might list 'm' to grab the math library
+  :system:
+    - m    # for example, you might list 'm' to grab the math library
   :test: []
   :release: []
 
@@ -348,13 +349,15 @@
 # See documentation to configure a given toolchain for use
 # :tools:
 #   :test_compiler:
-#     :executable:
-#     :arguments: []
+#     :executable: gcc
+#     :arguments:
+#       - -std=c99
 #     :name:
 #     :optional: FALSE
 #   :test_linker:
-#     :executable:
-#     :arguments: []
+#     :executable: gcc
+#     :arguments:
+#       - -lm
 #     :name:
 #     :optional: FALSE
 #   :test_assembler:
@@ -383,13 +386,15 @@
 #     :name:
 #     :optional: FALSE
 #   :release_compiler:
-#     :executable:
-#     :arguments: []
+#     :executable: gcc
+#     :arguments:
+#       - -std=c99
 #     :name:
 #     :optional: FALSE
 #   :release_linker:
-#     :executable:
-#     :arguments: []
+#     :executable: gcc
+#     :arguments:
+#       - -lm
 #     :name:
 #     :optional: FALSE
 #   :release_assembler:
