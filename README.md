@@ -1,6 +1,6 @@
 # Trabajo Práctico Número 2: Test Unitario
 
-NOTA: soy alumno externo y no cuento con trabajo final de especialización.
+**NOTA: soy alumno externo y no cuento con trabajo final de especialización.**
 
 Este proyecto implementa un integrador cinemático de cuaterniones para estimar la orientación de un cuerpo rígido (satélite) a partir de mediciones de velocidad angular provenientes de giróscopos.
 
